@@ -1,0 +1,66 @@
+@startuml
+enum ComponentType {
+    PLAYER
+    HOLE
+    BREEZE
+    STINK
+    WUMPUS
+    GOLD
+    EMPTY
+}
+
+class Position 
+{
+    - row
+    - column
+
+    + Position(row, column)
+    + getRow()
+    + getColumn()
+    + isEqual(position)
+}
+
+class Component
+{
+    - Cave cave
+    - Position position
+    - ComponentType type
+
+    + Component(cave, position)
+    + Position getPosition()
+    + void setPosition(position)
+    - void spawnSecondaryComponents()
+    + toString()
+}
+
+class Cave
+{
+    - Room[][] rooms
+
+    + Cave()
+    + ErrorType addComponent(component, position)
+    + Component[] getComponentsAt(position)
+}
+
+enum ErrorType
+{
+    NONE
+    OUT_OF_BOUNDS
+    INVALID_COMPONENTS
+}
+
+class Room
+{
+    - Component[] components
+    + ErrorType addComponent(component)
+    + Component getComponents()
+    + void removeComponent()
+    + boolean hasComponentType(componentType)
+    + boolean isEmpty()
+}
+
+Cave - Room
+Component - Cave
+Room - Component
+
+@enduml

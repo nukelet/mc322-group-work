@@ -43,4 +43,9 @@ public class Position {
         int column = this.column + position.getColumn();
         return new Position(row, column);
     }
+
+    @Override
+    public String toString() {
+        return "Position(row=" + row + ", column=" + column + ")";
+    }
 }

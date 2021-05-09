@@ -6,10 +6,19 @@ import mc322.lab06.components.*;
 
 public class Room {
     private ArrayList<Component> components;
+    private boolean visited;
 
     public Room() {
         this.components = new ArrayList<Component>();
+        this.visited = false;
+    }
 
+    public boolean visited() {
+        return visited;
+    }
+
+    public void setAsVisited() {
+        visited = true;
     }
 
     public ErrorType addComponent(Component component) {

@@ -1,9 +1,11 @@
-package mc322.lab06;
+package mc322.lab06.components;
 
-class Component {
-    private Cave cave;
-    private Position position;
-    private ComponentType type = null;
+import mc322.lab06.Cave;
+import mc322.lab06.Position;
+
+public abstract class Component {
+    protected Cave cave;
+    protected Position position;
 
     public Component(Cave cave, Position position) {
         this.cave = cave;
@@ -12,16 +14,20 @@ class Component {
     }
 
     // this method is supposed to be overridden
-    public void spawnSecondaryComponents() {
-
-    }
+    protected void spawnSecondaryComponents() {}
 
     public Position getPosition() {
         return this.position;
     }
 
+    // this method is supposed to be overridden
     public ComponentType getType() {
-        return this.type;
+        return null;
+    }
+
+    // this method is supposed to be overridden
+    public String singleLetterCode() {
+        return null;
     }
 
     // this method is supposed to be overridden

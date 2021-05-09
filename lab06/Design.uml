@@ -1,4 +1,28 @@
 @startuml
+
+class CSVHandling {
+    - dataSource: String
+    - dataExport: String
+    - commands: String[][]
+    - state: String[]
+
+    + CSVHandling()
+    + getDataSource(): String
+    + setDataSource(dataSource: String): void
+    + getDataExport(): String
+    + setDataExport(dataExport: String): void
+    + requestCommands(): String[][]
+    + exportState(state: String[]): void
+    - readCSV(): void
+    - writeCSV(): void
+}
+
+enum ErrorType {
+    NONE
+    OUT_OF_BOUNDS
+    INVALID_COMPONENTS
+}
+
 enum ComponentType {
     PLAYER
     HOLE
@@ -9,58 +33,119 @@ enum ComponentType {
     EMPTY
 }
 
-class Position 
-{
-    - row
-    - column
+class Position {
+    - row: int
+    - column: int
 
-    + Position(row, column)
-    + getRow()
-    + getColumn()
-    + isEqual(position)
+    + Position(row: int, column: int)
+    + getRow(): int
+    + getColumn(): int
+    + up(): Position
+    + down(): Position
+    + left(): Position
+    + right(): Position
+    + isEqual(position: Position): boolean
+    + add(position: Position): Position
+    + toString(): String
 }
 
-class Component
-{
-    - Cave cave
-    - Position position
-    - ComponentType type
+class Component {
+    # position: Position
+    # cave: Cave
 
-    + Component(cave, position)
-    + Position getPosition()
-    + void setPosition(position)
-    - void spawnSecondaryComponents()
-    + toString()
+    + Component(cave: Cave, position: Position)
+    # spawnSecondaryComponents(): void
+    + getPosition(): Position
+    + getType(): ComponentType
+    + singleLetterCode(): String
+    + toString(): String
 }
 
-class Cave
-{
-    - Room[][] rooms
-
-    + Cave()
-    + ErrorType addComponent(component, position)
-    + Component[] getComponentsAt(position)
+class Gold {
+    + Gold(cave: Cave, position: Position)
 }
 
-enum ErrorType
-{
-    NONE
-    OUT_OF_BOUNDS
-    INVALID_COMPONENTS
+Component <|-- Gold
+
+class Hole {
+    + Hole(cave: Cave, position: Position)
+    # spawnSecondaryComponents(): void
 }
 
-class Room
-{
-    - Component[] components
-    + ErrorType addComponent(component)
-    + Component getComponents()
-    + void removeComponent()
-    + boolean hasComponentType(componentType)
-    + boolean isEmpty()
+Component <|-- Hole
+
+class Wumpus {
+    + Wumpus(cave: Cave, position: Position)
+    # spawnSecondaryComponents(): void
 }
 
-Cave - Room
-Component - Cave
-Room - Component
+Component <|-- Wumpus
+
+class Hero {
+    - arrows: int
+    - arrowEquiped: boolean
+
+    + Hero(cave: Cave, position: Position)
+    + equipArrow(): void
+    + useArrow(): void
+    + collectGold(): void
+}
+
+Component <|-- Hero
+
+class Stink {
+    + Stink(cave: Cave, position: Position)
+}
+
+Component <|-- Stink
+
+class Breeze {
+    + Breeze(cave: Cave, position: Position)
+}
+
+Component <|-- Breeze
+
+class Room {
+    - components: ArrayList<Component>
+    - visited: boolean
+
+    + Room()
+    + getComponents(): ArrayList<Component>
+    + addComponent(component: Component): ErrorType
+    + removeComponent(component: Component): void
+    + visited(): boolean
+    + reveal(): void
+    + hasComponentType(type: ComponentType): boolean
+    + hasComponentType(componentList: ComponentType[]): boolean
+    + isEmpty(): boolean
+    + toString(): String
+}
+
+class Cave {
+    - rooms: Room[4][4]
+
+    + isPositionInside(position: Position): boolean
+    + addComponent(component: Component): boolean
+    + toString(): String
+}
+
+class CaveGenerator {
+
+    {static} + generateCaveFromCsv(csvPath: String): Cave
+}
+
+class Game {
+    - playerName: String
+    - score: int = 0
+    - cave: Cave
+
+    + Game(playerName: String, cave: Cave)
+    + toString(): String
+}
+
+class AppMundoWumpus {
+
+    {static} + main(args: String[]): void
+}
 
 @enduml

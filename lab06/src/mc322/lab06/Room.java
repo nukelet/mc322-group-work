@@ -2,10 +2,13 @@ package mc322.lab06;
 
 import java.util.ArrayList;
 
-class Room {
-    ArrayList<Component> components;
-    
+import mc322.lab06.components.*;
+
+public class Room {
+    private ArrayList<Component> components;
+
     public Room() {
+        this.components = new ArrayList<Component>();
 
     }
 

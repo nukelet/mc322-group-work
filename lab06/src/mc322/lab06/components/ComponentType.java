@@ -1,6 +1,6 @@
-package mc322.lab06;
+package mc322.lab06.components;
 
-enum ComponentType {
+public enum ComponentType {
     PLAYER,
     HOLE,
     BREEZE,

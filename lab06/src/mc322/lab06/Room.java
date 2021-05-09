@@ -69,8 +69,14 @@ public class Room {
     public void removeComponent(Component component) {
 
     }
-    
+
     public boolean isEmpty() {
         return components.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        // TODO finish implementing the components part
+        return "Room(components=" + ", visited=" + visited + ")";
     }
 }

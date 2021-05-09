@@ -23,22 +23,22 @@ public class Room {
 
     public ErrorType addComponent(Component component) {
         ComponentType[] incompatibleTypes = 
-        {
-            ComponentType.GOLD,
-            ComponentType.HOLE,
-            ComponentType.WUMPUS
-        };
+            {
+                    ComponentType.GOLD,
+                    ComponentType.HOLE,
+                    ComponentType.WUMPUS
+            };
 
         switch (component.getType()) { 
-            case GOLD:
-            case HOLE:
-            case WUMPUS:
-                if (hasComponentType(incompatibleTypes)) {
-                    return ErrorType.INVALID_COMPONENTS;
-                }
-                break;
-            default:
-                components.add(component);
+        case GOLD:
+        case HOLE:
+        case WUMPUS:
+            if (hasComponentType(incompatibleTypes)) {
+                return ErrorType.INVALID_COMPONENTS;
+            }
+            break;
+        default:
+            components.add(component);
         }
 
         return ErrorType.NONE;

@@ -35,7 +35,7 @@ public class Position {
 
     public boolean isEqual(Position position) {
         return this.row == position.getRow() &&
-            this.column == position.getColumn();
+                this.column == position.getColumn();
     }
 
     public Position add(Position position) {

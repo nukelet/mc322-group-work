@@ -14,16 +14,35 @@ public class Cave {
         }
     }
 
-    public boolean isPositionInside(Position position) {
-        // TODO rename this method (?)
-        return position.getRow() >= 1 && position.getRow() <= 4 &&
-                position.getColumn() >= 1 && position.getColumn() <= 4;
+    public boolean isWithinBounds(Position position) {
+        return position.getRow() >= 0 && position.getRow() < 4 &&
+                position.getColumn() >= 0 && position.getColumn() < 4;
+    }
+
+    public Room roomAt(Position position) {
+        if (isWithinBounds(position)) {
+            return rooms[position.getRow()][position.getColumn()];
+        } else {
+            return null;
+        }
     }
 
     // returns true only when component is successfully added
     public boolean addComponent(Component component) {
-        if (!isPositionInside(component.getPosition())) {
+        if (component == null) {
             return false;
+        }
+
+        if (!isWithinBounds(component.getPosition())) {
+            // System.err.println("Position out of bounds");
+            return false;
+        }
+        
+        // System.out.println("Adding piece " + component.singleLetterCode() +
+        //         " at " + component.getPosition().toString());
+        ErrorType err = roomAt(component.getPosition()).addComponent(component);
+        if (err != ErrorType.NONE) {
+            System.out.println("error");
         }
 
         // TODO add checks about the component
@@ -42,9 +61,10 @@ public class Cave {
                 result += " ";
                 Room room = rooms[i][j];
                 if (!room.visited()) {
+                // if (false) {
                     result += "-";
                 } else {
-
+                    result += room.getComponentString();
                 }
             }
             result += "\n";

@@ -36,7 +36,7 @@ public class Hero extends Component {
 
     @Override
     public ComponentType getType() {
-        return ComponentType.PLAYER;
+        return ComponentType.HERO;
     }
 
     @Override

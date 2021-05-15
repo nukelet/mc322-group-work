@@ -1,7 +1,7 @@
 package mc322.lab06.components;
 
 public enum ComponentType {
-    PLAYER,
+    HERO,
     HOLE,
     BREEZE,
     WUMPUS,

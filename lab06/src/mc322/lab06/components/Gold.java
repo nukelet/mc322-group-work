@@ -9,9 +9,6 @@ public class Gold extends Component {
     }
 
     @Override
-    protected void spawnSecondaryComponents() {}
-
-    @Override
     public ComponentType getType() {
         return ComponentType.GOLD;
     }

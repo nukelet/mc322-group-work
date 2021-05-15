@@ -9,9 +9,6 @@ public class Stink extends Component {
     }
 
     @Override
-    protected void spawnSecondaryComponents() {}
-
-    @Override
     public ComponentType getType() {
         return ComponentType.STINK;
     }

@@ -14,24 +14,18 @@ public abstract class Component {
     }
 
     // this method is supposed to be overridden
-    protected void spawnSecondaryComponents() {}
+    protected void spawnSecondaryComponents() {};
 
     public Position getPosition() {
         return this.position;
     }
 
     // this method is supposed to be overridden
-    public ComponentType getType() {
-        return null;
-    }
+    public abstract ComponentType getType();
 
     // this method is supposed to be overridden
-    public String singleLetterCode() {
-        return null;
-    }
+    public abstract String singleLetterCode();
 
     // this method is supposed to be overridden
-    public String toString() {
-        return null;
-    }
+    public abstract String toString();
 }

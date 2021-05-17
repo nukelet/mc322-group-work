@@ -14,6 +14,10 @@ public class Hero extends Component {
         this.arrowEquipped = false;
     }
 
+    public int getArrowCount() {
+        return arrows;
+    }
+
     public boolean isArrowEquipped() {
         return arrowEquipped;
     }

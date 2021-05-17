@@ -141,7 +141,9 @@ public class Game {
     public String toString() {
         String result = cave.toString() + "\n\n";
         result += "Player: " + playerName + "\n";
-        result += "Score: " + score;
+        result += "Score: " + score + "\n";
+        result += "Arrows: " + player.getArrowCount() + "\n";
+        result += "Has gold: " + (isGoldCaptured ? "yes" : "no") + "\n";
         return result;
     }
 }

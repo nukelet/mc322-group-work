@@ -46,7 +46,7 @@ public class Game {
                 return player.moveRight();
             case COLLECT_GOLD:
                 if (player.collectGold()) {
-                    this.isGoldCaptured = true;
+                    isGoldCaptured = true;
                     return true;
                 } else {
                     return false;
@@ -54,7 +54,7 @@ public class Game {
             case EQUIP_ARROW:
                 return player.equipArrow();
             case EXIT_GAME:
-                setGameState(GameState.GAME_OVER);
+                setState(GameState.GAME_OVER);
                 return true;
             default:
                 return false;
@@ -65,7 +65,7 @@ public class Game {
         Room playerRoom = cave.roomAt(player.getPosition());
         if (playerRoom.hasComponentType(ComponentType.HOLE)) {
             System.out.println("You fell in a hole! Game over :(");
-            setGameState(GameState.GAME_OVER);
+            setState(GameState.GAME_OVER);
             score -= 1000;
             return;
         } else if (playerRoom.hasComponentType(ComponentType.WUMPUS)) {
@@ -76,16 +76,24 @@ public class Game {
                     score += 500;
                     return;
                 } else {
-                    setGameState(GameState.GAME_OVER);
+                    setState(GameState.GAME_OVER);
                     System.out.println("The Wumpus killed you! Game over :(");
                     score -= 1000;
                     return;
                 }
             } else {
-                setGameState(GameState.GAME_OVER);
+                setState(GameState.GAME_OVER);
                 System.out.println("The Wumpus killed you! Game over :(");
                 return;
             }
+        }
+
+        if (playerRoom.hasComponentType(ComponentType.BREEZE)) {
+            System.out.println("You feel a cold breeze running through the room...");
+        } 
+
+        if (playerRoom.hasComponentType(ComponentType.STINK)) {
+            System.out.println("The room is filled with a horrid stench...");
         }
 
         if (isShotPrepared) {
@@ -109,7 +117,7 @@ public class Game {
                 score += 1000;
                 System.out.println("You won!");
                 System.out.println("Score: " + score);
-                setGameState(GameState.GAME_OVER);
+                setState(GameState.GAME_OVER);
                 return;
             } else {
                 System.out.println("You must get the gold before leaving!");
@@ -117,12 +125,16 @@ public class Game {
         }
     }
 
-    private void setGameState(GameState state) {
+    private void setState(GameState state) {
         this.state = state;
     }
 
-    public GameState getGameState() {
-        return this.state;
+    public GameState getState() {
+        return state;
+    }
+
+    public boolean isOver() {
+        return state == GameState.GAME_OVER;
     }
 
     @Override

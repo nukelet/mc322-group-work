@@ -10,11 +10,11 @@ public class Position {
     }
 
     public int getRow() {
-        return this.row;
+        return row;
     }
 
     public int getColumn() {
-        return this.column;
+        return column;
     }
 
     public Position up() {
@@ -34,8 +34,8 @@ public class Position {
     }
 
     public boolean isEqual(Position position) {
-        return this.row == position.getRow() &&
-                this.column == position.getColumn();
+        return row == position.getRow() &&
+                column == position.getColumn();
     }
 
     public boolean isEqual(int row, int column) {

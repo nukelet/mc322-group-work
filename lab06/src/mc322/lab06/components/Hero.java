@@ -42,11 +42,11 @@ public class Hero extends Component {
         // TODO: consider refactoring this
         // i think that the fact that we need to do this to move the Component
         // might mean that we probably don't have the right abstraction
-        Position oldPos = this.position;
-        this.position = destination;
+        Position oldPos = position;
+        position = destination;
 
         if (!cave.addComponent(this)) {
-            this.position = oldPos;
+            position = oldPos;
             return false;
         } else {
             Room oldPlayerRoom = cave.roomAt(oldPos);
@@ -56,22 +56,22 @@ public class Hero extends Component {
     }
 
     public boolean moveUp() {
-        Position destination = this.position.up();
+        Position destination = position.up();
         return move(destination);
     }
 
     public boolean moveDown() {
-        Position destination = this.position.down();
+        Position destination = position.down();
         return move(destination);
     }
 
     public boolean moveLeft() {
-        Position destination = this.position.left();
+        Position destination = position.left();
         return move(destination);
     }
 
     public boolean moveRight() {
-        Position destination = this.position.right();
+        Position destination = position.right();
         return move(destination);
     }
 

@@ -68,7 +68,7 @@ public class Room {
     }
 
     public ArrayList<Component> getComponents() {
-        return this.components;
+        return components;
     }
 
     public boolean removeComponent(Component component) {

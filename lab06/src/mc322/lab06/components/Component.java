@@ -17,15 +17,12 @@ public abstract class Component {
     protected void spawnSecondaryComponents() {};
 
     public Position getPosition() {
-        return this.position;
+        return position;
     }
 
-    // this method is supposed to be overridden
     public abstract ComponentType getType();
 
-    // this method is supposed to be overridden
     public abstract String singleLetterCode();
 
-    // this method is supposed to be overridden
     public abstract String toString();
 }

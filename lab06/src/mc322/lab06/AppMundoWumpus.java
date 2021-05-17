@@ -11,7 +11,7 @@ public class AppMundoWumpus {
 
     public static void runGame() {
         Scanner input = new Scanner(System.in);
-        while (game.getGameState() != GameState.GAME_OVER) {
+        while (!game.isOver()) {
             System.out.println(game);
             System.out.print("Next action [w, s, a, d, k, c, q, ?]: ");
             String nextAction = input.nextLine();

@@ -33,6 +33,21 @@ enum ComponentType {
     EMPTY
 }
 
+enum CommandType {
+    MOVE_UP,
+    MOVE_DOWN,
+    MOVE_LEFT,
+    MOVE_RIGHT,
+    EQUIP_ARROW,
+    COLLECT_GOLD,
+    EXIT_GAME
+}
+
+enum GameState {
+    GAME_ONGOING
+    GAME_OVER
+}
+
 class Position {
     - row: int
     - column: int
@@ -45,24 +60,28 @@ class Position {
     + left(): Position
     + right(): Position
     + isEqual(position: Position): boolean
+    + isEqual(row: int, column: int): boolean
     + add(position: Position): Position
     + toString(): String
 }
 
-class Component {
+abstract class Component {
     # position: Position
     # cave: Cave
 
     + Component(cave: Cave, position: Position)
     # spawnSecondaryComponents(): void
     + getPosition(): Position
-    + getType(): ComponentType
-    + singleLetterCode(): String
-    + toString(): String
+    + {abstract} getType(): ComponentType
+    + {abstract} singleLetterCode(): String
+    + {abstract} toString(): String
 }
 
 class Gold {
     + Gold(cave: Cave, position: Position)
+    + getType(): ComponentType
+    + singleLetterCode(): String
+    + toString(): String
 }
 
 Component <|-- Gold
@@ -70,6 +89,9 @@ Component <|-- Gold
 class Hole {
     + Hole(cave: Cave, position: Position)
     # spawnSecondaryComponents(): void
+    + getType(): ComponentType
+    + singleLetterCode(): String
+    + toString(): String
 }
 
 Component <|-- Hole
@@ -77,30 +99,49 @@ Component <|-- Hole
 class Wumpus {
     + Wumpus(cave: Cave, position: Position)
     # spawnSecondaryComponents(): void
+    + getType(): ComponentType
+    + singleLetterCode(): String
+    + toString(): String
 }
 
 Component <|-- Wumpus
 
 class Hero {
     - arrows: int
-    - arrowEquiped: boolean
+    - arrowEquipped: boolean
 
     + Hero(cave: Cave, position: Position)
-    + equipArrow(): void
+    + getArrowCount(): int
+    + isArrowEquipped(): boolean
+    + equipArrow(): boolean
     + useArrow(): void
-    + collectGold(): void
+    + move(destination: Position): boolean
+    + moveUp(): boolean
+    + moveDown(): boolean
+    + moveLeft(): boolean
+    + moveRight(): boolean
+    + collectGold(): boolean
+    + getType(): ComponentType
+    + singleLetterCode(): String
+    + toString(): String
 }
 
 Component <|-- Hero
 
 class Stink {
     + Stink(cave: Cave, position: Position)
+    + getType(): ComponentType
+    + singleLetterCode(): String
+    + toString(): String
 }
 
 Component <|-- Stink
 
 class Breeze {
     + Breeze(cave: Cave, position: Position)
+    + getType(): ComponentType
+    + singleLetterCode(): String
+    + toString(): String
 }
 
 Component <|-- Breeze
@@ -110,42 +151,61 @@ class Room {
     - visited: boolean
 
     + Room()
+    + visited(): boolean
+    + setAsVisited(): void
     + getComponents(): ArrayList<Component>
     + addComponent(component: Component): ErrorType
     + removeComponent(component: Component): void
-    + visited(): boolean
-    + reveal(): void
+    + removeComponentType(type: ComponentType): boolean
     + hasComponentType(type: ComponentType): boolean
     + hasComponentType(componentList: ComponentType[]): boolean
     + isEmpty(): boolean
+    + getComponentString(): String
     + toString(): String
 }
 
 class Cave {
     - rooms: Room[4][4]
 
-    + isPositionInside(position: Position): boolean
+    + Cave()
+    + isWithinBounds(position: Position): boolean
+    + roomAt(position: Position): Room
     + addComponent(component: Component): boolean
     + toString(): String
 }
 
 class CaveGenerator {
-
-    {static} + generateCaveFromCsv(csvPath: String): Cave
+    - {static} checkComponentTypeCount(): boolean
+    - {static} getComponent(componentString: String, cave: Cave, position: Position): Component
+    + {static} generateCaveFromCsv(csvPath: String): Cave
+    + {static} main(args: String[]): void
 }
 
 class Game {
     - playerName: String
     - score: int = 0
+    - state: GameState
+    - isGoldCaptured: boolean
+    - isShotPrepared: boolean
+    - player: Hero
     - cave: Cave
 
     + Game(playerName: String, cave: Cave)
+    + doMove(move: CommandType): boolean
+    + updateGameState(): void
+    - setState(state: GameState): void
+    + getState(): GameState
+    + isOver(): boolean
     + toString(): String
 }
 
 class AppMundoWumpus {
+    - {static} game: Game
 
-    {static} + main(args: String[]): void
+    + {static} initializeGame(playerName: String, csvPath: String): void
+    + {static} runGame(): void
+    - {static} handleInput(action: String): void
+    + {static} main(args: String[]): void
 }
 
 @enduml

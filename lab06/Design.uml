@@ -175,9 +175,10 @@ class Cave {
 }
 
 class CaveGenerator {
-    - {static} checkComponentTypeCount(): boolean
-    - {static} getComponent(componentString: String, cave: Cave, position: Position): Component
+    - {static} hero: Hero
+
     + {static} generateCaveFromCsv(csvPath: String): Cave
+    + {static} getHero(): Hero
     + {static} main(args: String[]): void
 }
 
@@ -201,8 +202,9 @@ class Game {
 
 class AppMundoWumpus {
     - {static} game: Game
+    + {static} input: Scanner
 
-    + {static} initializeGame(playerName: String, csvPath: String): void
+    + {static} initializeGame(csvPath: String): void
     + {static} runGame(): void
     - {static} handleInput(action: String): void
     + {static} main(args: String[]): void

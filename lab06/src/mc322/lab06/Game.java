@@ -29,9 +29,11 @@ public class Game {
         this.isGoldCaptured = false;
         this.isShotPrepared = false;
 
-        cave = CaveGenerator.generateCaveFromCsv(csvPath);
-        this.player = new Hero(this.cave, new Position(0, 0));
-        cave.addComponent(this.player);
+        this.cave = CaveGenerator.generateCaveFromCsv(csvPath);
+        if (this.cave == null) {
+            System.exit(1);
+        }
+        this.player = CaveGenerator.getHero();
     }
 
     public boolean doMove(CommandType move) {

@@ -4,94 +4,95 @@ import mc322.lab06.components.*;
 import java.util.HashMap;
 
 public class CaveGenerator {
-    private static HashMap<ComponentType, Integer> typeCount =
-        new HashMap<ComponentType, Integer>() {{ 
-            put(ComponentType.HOLE, 0);
-            put(ComponentType.WUMPUS, 0);
-            put(ComponentType.GOLD, 0);
-        }};
+    private static Hero hero;
 
+    /**
+     * Generates a cave from a CSV and checks its validness. A cave is valid
+     * if it has 1 Hero at (1,1), 1 Wumpus, 1 Gold and 2 or 3 Holes, with none
+     * of them sharing the same position.
+     *
+     * @param csvPath
+     * @return correctly generated cave or null in case of failure
+     */
     public static Cave generateCaveFromCsv(String csvPath) {
+        hero = null;
         Cave cave = new Cave();
 
-        CSVHandling csv = new CSVHandling();
-        csv.setDataSource(csvPath);
-        String[][] commands = csv.requestCommands();
+        CSVHandling csvHandling = new CSVHandling();
+        csvHandling.setDataSource(csvPath);
+        String[][] commands = csvHandling.requestCommands();
+
+        int heroCount = 0;
+        int goldCount = 0;
+        int wumpusCount = 0;
+        int holeCount = 0;
+
         for (String[] line : commands) {
-            String[] position = line[0].split(":");
-            int posX = Integer.parseInt(position[0]) - 1;
-            int posY = Integer.parseInt(position[1]) - 1;
-            Position pos = new Position(posX, posY);
+            String[] strPosition = line[0].split(":");
+            int row = Integer.parseInt(strPosition[0]) - 1;
+            int column = Integer.parseInt(strPosition[1]) - 1;
+            Position position = new Position(row, column);
 
-            String componentString = line[1];
-            Component component = getComponent(componentString, cave, pos);
-            if (component != null) {
-                cave.addComponent(component);
-                int count = typeCount.get(component.getType());
-                typeCount.put(component.getType(), count + 1);
-            }
-        }
-        
-        if (checkComponentTypeCount()) {
-            return cave;
-        } else {
-            System.err.println("Error generating cave from csv: invalid component count");
-            System.exit(1);
-        }
-
-        return null;
-    }
-
-    /* Checks the number of components to be added to the cave
-     * Wumpus: 1
-     * Gold: 1
-     * Hole: 2 or 3
-     *
-     * @returns true if the component count is valid, false otherwise
-     */
-    private static boolean checkComponentTypeCount() {
-        if (typeCount.get(ComponentType.WUMPUS) != 1) {
-            return false;
-        }
-
-        if (typeCount.get(ComponentType.GOLD) != 1) {
-            return false;
-        }
-
-        int holeCount = typeCount.get(ComponentType.HOLE);
-        if (holeCount < 2 || holeCount > 3) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private static Component getComponent(String componentString, Cave cave, Position position) {
-        Component component = null;
-        switch (componentString) {
+            String strComponent = line[1];
+            switch (strComponent) {
             case "P":
-                // TODO: discuss removing this
-                // the responsibility of creating a Hero component should
-                // be delegated to the Game class, i think
-                // component = new Hero(cave, position);
-                break;
-            case "O":
-                component = new Gold(cave, position);
-                break;
-            case "B":
-                component = new Hole(cave, position);
+                heroCount++;
+                if (position.getRow() != 0 || position.getColumn() != 0) {
+                    System.err.println("Hero can only start at cave entrance");
+                    return null;
+                }
+                hero = new Hero(cave, position);
+                if (!cave.addComponent(hero)) {
+                    System.err.println("Failed adding Hero to " + position);
+                    return null;
+                }
                 break;
             case "W":
-                component = new Wumpus(cave, position);
+                wumpusCount++;
+                if (!cave.addComponent(new Wumpus(cave, position))) {
+                    System.err.println("Failed adding Wumpus to " + position);
+                    return null;
+                }
+                break;
+            case "O":
+                goldCount++;
+                if (!cave.addComponent(new Gold(cave, position))) {
+                    System.err.println("Failed adding Gold to " + position);
+                    return null;
+                }
+                break;
+            case "B":
+                holeCount++;
+                if (!cave.addComponent(new Hole(cave, position))) {
+                    System.err.println("Failed adding Hole to " + position);
+                    return null;
+                }
                 break;
             case "_":
-                component = null;
                 break;
             default:
-                System.err.println("Error generating cave from csv; invalid token: " + componentString);
+                System.err.println("Error generating cave from CSV; invalid token: " + strComponent);
+                return null;
+            }
         }
 
-        return component;
+        if (heroCount != 1 || goldCount != 1 || wumpusCount != 1 || (holeCount != 2 && holeCount != 3)) {
+            System.err.println("Error generating cave from CSV: invalid component count");
+            return null;
+        }
+
+        return cave;
+    }
+
+    /**
+     * Gets the hero created during the last generation of a cave. This hero
+     * only represents the correct hero if the generation method didn't return
+     * null.
+     *
+     * @return hero created during the last generation of a cave.
+     */
+    public static Hero getHero() {
+        return hero;
     }
 
     public static void main(String[] args) {

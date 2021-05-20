@@ -3,14 +3,14 @@ package mc322.lab06;
 import java.util.Scanner;
 
 public class AppMundoWumpus {
-    private static Game game;    
+    private static Game game;
+    public static Scanner input = new Scanner(System.in);
 
     public static void initializeGame(String playerName, String csvPath) {
         game = new Game(playerName, csvPath);
     }
 
     public static void runGame() {
-        Scanner input = new Scanner(System.in);
         while (!game.isOver()) {
             System.out.println(game);
             System.out.print("Next action [w, s, a, d, k, c, q, ?]: ");
@@ -18,7 +18,6 @@ public class AppMundoWumpus {
             handleInput(nextAction);
             game.updateGameState();
        }
-       input.close();
     }
 
     private static void handleInput(String action) {
@@ -71,12 +70,17 @@ public class AppMundoWumpus {
     }
 
     public static void main(String[] args) {
-        if (args.length != 2) {
-            System.err.println("args: <player-name> <path-to-csv>");
+        if (args.length != 1) {
+            System.err.println("args: <path-to-csv>");
             System.exit(1);
         }
 
-        initializeGame(args[0], args[1]);
+        System.out.println("Insert player name:");
+        String playerName = input.nextLine();
+
+        initializeGame(playerName, args[0]);
         runGame();
+
+        input.close();
     }
 }

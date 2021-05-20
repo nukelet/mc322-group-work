@@ -38,14 +38,13 @@ public class Hero extends Component {
         }
     }
 
-    /* Moves the Hero component to the specified position
-     * @params: destination
-     * @returns: true if the move was successful and false otherwise
+    /**
+     * Moves the Hero component to the specified position.
+     *
+     * @param destination
+     * @return true if the move was successful, false otherwise
      */
     public boolean move(Position destination) {
-        // TODO: consider refactoring this
-        // i think that the fact that we need to do this to move the Component
-        // might mean that we probably don't have the right abstraction
         Position oldPos = position;
         position = destination;
 
@@ -79,8 +78,10 @@ public class Hero extends Component {
         return move(destination);
     }
 
-    /* Collects Gold from the Room the Hero is in
-     * @returns: true if Gold could be collected, false otherwise
+    /**
+     * Collects Gold from the Room the Hero is in.
+     *
+     * @return true if Gold could be collected, false otherwise.
      */
     public boolean collectGold() {
         Room currentRoom = cave.roomAt(position);

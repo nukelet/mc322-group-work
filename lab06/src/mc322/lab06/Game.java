@@ -38,28 +38,28 @@ public class Game {
 
     public boolean doMove(CommandType move) {
         switch (move) {
-            case MOVE_UP:
-                return player.moveUp();
-            case MOVE_DOWN:
-                return player.moveDown();
-            case MOVE_LEFT:
-                return player.moveLeft();
-            case MOVE_RIGHT:
-                return player.moveRight();
-            case COLLECT_GOLD:
-                if (player.collectGold()) {
-                    isGoldCaptured = true;
-                    return true;
-                } else {
-                    return false;
-                }
-            case EQUIP_ARROW:
-                return player.equipArrow();
-            case EXIT_GAME:
-                setState(GameState.GAME_OVER);
+        case MOVE_UP:
+            return player.moveUp();
+        case MOVE_DOWN:
+            return player.moveDown();
+        case MOVE_LEFT:
+            return player.moveLeft();
+        case MOVE_RIGHT:
+            return player.moveRight();
+        case COLLECT_GOLD:
+            if (player.collectGold()) {
+                isGoldCaptured = true;
                 return true;
-            default:
+            } else {
                 return false;
+            }
+        case EQUIP_ARROW:
+            return player.equipArrow();
+        case EXIT_GAME:
+            setState(GameState.GAME_OVER);
+            return true;
+        default:
+            return false;
         }
     }
 
@@ -96,7 +96,7 @@ public class Game {
 
         if (playerRoom.hasComponentType(ComponentType.BREEZE)) {
             System.out.println("You feel a cold breeze running through the room...");
-        } 
+        }
 
         if (playerRoom.hasComponentType(ComponentType.STINK)) {
             System.out.println("The room is filled with a horrid stench...");
@@ -106,7 +106,7 @@ public class Game {
             player.useArrow();
             score -= 100;
         }
-        
+
         // triggers in turns where the player is equipping the arrow;
         if (player.isArrowEquipped()) {
             isShotPrepared = true;

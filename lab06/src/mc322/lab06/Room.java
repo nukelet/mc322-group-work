@@ -106,13 +106,14 @@ public class Room {
         String str = maxPriority == null ? "#" : maxPriority.singleLetterCode();
         return str;
     }
+
     @Override
     public String toString() {
-        // TODO finish implementing the components part
-        String str = "";
-        for (Component c : components) {
-            str += c.toString() + "\n";
+        String componentsListString = "[";
+        for (int i = 0; i < components.size(); i++) {
+            componentsListString += components.get(i).singleLetterCode();
+            componentsListString += (i == components.size() - 1) ? "]" : ", ";
         }
-        return "Room(components=" + str + ", visited=" + visited + ")";
+        return "Room(components=" + componentsListString + ", visited=" + visited + ")";
     }
 }

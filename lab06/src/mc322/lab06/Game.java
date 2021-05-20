@@ -66,25 +66,29 @@ public class Game {
     public void updateGameState() {
         Room playerRoom = cave.roomAt(player.getPosition());
         if (playerRoom.hasComponentType(ComponentType.HOLE)) {
-            System.out.println("You fell in a hole! Game over :(");
-            setState(GameState.GAME_OVER);
             score -= 1000;
+            setState(GameState.GAME_OVER);
+            System.out.println(toString());
+            System.out.println("You fell in a hole! Game over :(");
             return;
         } else if (playerRoom.hasComponentType(ComponentType.WUMPUS)) {
             if (isShotPrepared) {
                 if (Math.random() < 0.5) {
                     playerRoom.removeComponentType(ComponentType.WUMPUS);
-                    System.out.println("You killed the Wumpus!");
                     score += 500;
+                    System.out.println("You killed the Wumpus!");
                     return;
                 } else {
-                    setState(GameState.GAME_OVER);
-                    System.out.println("The Wumpus killed you! Game over :(");
                     score -= 1000;
+                    setState(GameState.GAME_OVER);
+                    System.out.println(toString());
+                    System.out.println("The Wumpus killed you! Game over :(");
                     return;
                 }
             } else {
+                score -= 1000;
                 setState(GameState.GAME_OVER);
+                System.out.println(toString());
                 System.out.println("The Wumpus killed you! Game over :(");
                 return;
             }
@@ -117,9 +121,9 @@ public class Game {
         if (player.getPosition().isEqual(0, 0)) {
             if (isGoldCaptured) {
                 score += 1000;
-                System.out.println("You won!");
-                System.out.println("Score: " + score);
                 setState(GameState.GAME_OVER);
+                System.out.println(toString());
+                System.out.println("You won!");
                 return;
             } else {
                 System.out.println("You must get the gold before leaving!");

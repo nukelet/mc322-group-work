@@ -6,7 +6,10 @@ public class AppMundoWumpus {
     private static Game game;
     public static Scanner input = new Scanner(System.in);
 
-    public static void initializeGame(String playerName, String csvPath) {
+    public static void initializeGame(String csvPath) {
+        System.out.println("Insert player name:");
+        String playerName = input.nextLine();
+        System.out.println();
         game = new Game(playerName, csvPath);
     }
 
@@ -75,10 +78,7 @@ public class AppMundoWumpus {
             System.exit(1);
         }
 
-        System.out.println("Insert player name:");
-        String playerName = input.nextLine();
-
-        initializeGame(playerName, args[0]);
+        initializeGame(args[0]);
         runGame();
 
         input.close();

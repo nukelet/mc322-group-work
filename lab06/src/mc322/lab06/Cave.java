@@ -1,6 +1,6 @@
 package mc322.lab06;
 
-import mc322.lab06.components.*;
+import mc322.lab06.components.Component;
 
 public class Cave {
     private Room rooms[][];
@@ -34,26 +34,19 @@ public class Cave {
         }
 
         if (!isWithinBounds(component.getPosition())) {
-            // System.err.println("Position out of bounds");
             return false;
         }
-        
-        // System.out.println("Adding piece " + component.singleLetterCode() +
-        //         " at " + component.getPosition().toString());
+
         ErrorType err = roomAt(component.getPosition()).addComponent(component);
         if (err != ErrorType.NONE) {
             System.out.println("error");
         }
-
-        // TODO add checks about the component
-
 
         return true;
     }
 
     @Override
     public String toString() {
-        // TODO finish implementing
         String result = "";
         for (int i = 0; i < 4; i++) {
             result += (i + 1);
@@ -61,7 +54,6 @@ public class Cave {
                 result += " ";
                 Room room = rooms[i][j];
                 if (!room.visited()) {
-                // if (false) {
                     result += "-";
                 } else {
                     result += room.getComponentString();

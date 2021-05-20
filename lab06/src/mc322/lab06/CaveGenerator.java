@@ -1,7 +1,6 @@
 package mc322.lab06;
-import mc322.lab06.components.*;
 
-import java.util.HashMap;
+import mc322.lab06.components.*;
 
 public class CaveGenerator {
     private static Hero hero;
@@ -96,7 +95,7 @@ public class CaveGenerator {
     }
 
     public static void main(String[] args) {
-        Cave cave = generateCaveFromCsv("data/cave1.csv");
+        Cave cave = generateCaveFromCsv("lab06/data/cave1.csv");
         System.out.println(cave);
     }
 }

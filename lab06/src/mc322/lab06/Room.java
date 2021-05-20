@@ -27,23 +27,23 @@ public class Room {
                 ComponentType.GOLD,
                 ComponentType.HOLE,
                 ComponentType.WUMPUS
-            };
+        };
 
-        switch (component.getType()) { 
-            case GOLD:
-            case HOLE:
-            case WUMPUS:
-                if (hasComponentType(incompatibleTypes)) {
-                    return ErrorType.INVALID_COMPONENTS;
-                } else {
-                    components.add(component);
-                }
-                break;
-            default:
-                if (component.getType() == ComponentType.HERO) {
-                    setAsVisited();
-                }
+        switch (component.getType()) {
+        case GOLD:
+        case HOLE:
+        case WUMPUS:
+            if (hasComponentType(incompatibleTypes)) {
+                return ErrorType.INVALID_COMPONENTS;
+            } else {
                 components.add(component);
+            }
+            break;
+        default:
+            if (component.getType() == ComponentType.HERO) {
+                setAsVisited();
+            }
+            components.add(component);
         }
 
         return ErrorType.NONE;
@@ -84,8 +84,7 @@ public class Room {
     }
 
     public String getComponentString() {
-        // TODO: maybe come up with a better way to do this?
-        HashMap<ComponentType, Integer> priority = new HashMap<ComponentType, Integer>() {{ 
+        HashMap<ComponentType, Integer> priority = new HashMap<ComponentType, Integer>() {{
             put(ComponentType.GOLD, 3);
             put(ComponentType.WUMPUS, 3);
             put(ComponentType.HOLE, 3);

@@ -13,7 +13,6 @@ public abstract class Component {
         spawnSecondaryComponents();
     }
 
-    // this method is supposed to be overridden
     protected void spawnSecondaryComponents() {};
 
     public Position getPosition() {
@@ -24,5 +23,6 @@ public abstract class Component {
 
     public abstract String singleLetterCode();
 
+    @Override
     public abstract String toString();
 }

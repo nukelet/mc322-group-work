@@ -1,16 +1,21 @@
 package mc322.lab07.blocks;
 
-import com.badlogic.gdx.math.Vector2;
-import mc322.lab07.World;
+import com.badlogic.gdx.graphics.Texture;
 
-public class Sand extends BlockEntity {
-    public Sand(Vector2 position, World world) {
+import mc322.lab07.World;
+import mc322.lab07.util.Position;
+
+public class Sand extends Block {
+    public Sand(Position position, World world) {
         super(position, world);
+        texture = new Texture("sand.png");
     }
 
-    public void updateState() {
-        if (world.getBlockDown(position, 1) == null) {
+    protected void setType() {
+        this.type = BlockType.SAND;
+    }
 
-        }
+    public void interact(Block block) {
+        return;
     }
 }

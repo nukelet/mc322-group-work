@@ -1,71 +1,84 @@
 package mc322.lab07;
 
-import com.badlogic.gdx.math.Vector2;
-
-import mc322.lab07.blocks.BlockEntity;
+import mc322.lab07.blocks.Block;
 import mc322.lab07.blocks.Sand;
 import mc322.lab07.blocks.Rock;
+
+import mc322.lab07.util.Position;
 
 
 public class World {
     // blocks[height][width]
-    private final int width = 20;
-    private final int height = 20;
-    private BlockEntity[][] blocks = new BlockEntity[height][width];
-
-    private static Vector2 up = new Vector2(0, 1);
-    private static Vector2 down = new Vector2(0, -1);
-    private static Vector2 left = new Vector2(-1, 0);
-    private static Vector2 right = new Vector2(1, 0);
+    private int width = 20;
+    private int height = 20;
+    private Block[][] blocks = new Block[width][height];
 
     public World() {
         for (int i = 0; i < 5; i++) {
-            Vector2 pos = new Vector2(10, 19 - i);
+            Position pos = new Position(10, 19 - i);
             Sand sandBlock = new Sand(pos, this);
-            setBlock(sandBlock);
+            addBlock(sandBlock);
         }
 
         for (int i = 0; i < width; i++) {
-            Vector2 pos = new Vector2(i, 0);
+            Position pos = new Position(i, 0);
             Rock rockBlock = new Rock(pos, this);
-            setBlock(rockBlock);
+            addBlock(rockBlock);
         }
+    }
+
+    public World(int width, int height) {
+        // calls the World() constructor
+        // don't know if this is bad or not
+        this();
+        this.width = width;
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
     }
 
     // make sure that no blocks are overwritten?
-    public void setBlock(BlockEntity block) {
-        if (isValidPosition(block.getPosition())) {
-            int i = (int) block.getPosition().x;
-            int j = (int) block.getPosition().y;
-            blocks[i][j] = block;
+    public void addBlock(Block block) {
+        Position pos = block.getPosition();
+        if (isValidPosition(pos)) {
+            int x = block.getPosition().x;
+            int y = block.getPosition().y;
+            blocks[x][y] = block;
+        } else {
+            System.err.printf("Invalid block add at %s: position not empty\n", pos);
         }
     }
 
-    private boolean isValidPosition(Vector2 position) {
+    private boolean isValidPosition(Position position) {
         return position.x >= 0 && position.y >= 0 &&
-            (int) position.x < width && (int) position.y < height;
+            position.x < width && position.y < height;
     }
 
-    public BlockEntity getBlockAt(Vector2 position) {
-        // potentially bug-inducing
-        int i = (int) position.x;
-        int j = (int) position.y;
-        return blocks[i][j];
+    public Block getBlockAt(Position position) {
+        if (!isValidPosition(position)) {
+            System.err.printf("Invalid access to position %s: out of bounds\n", position);
+            return null;
+        } else {
+            return blocks[position.x][position.y];
+        }
     }
 
-    public BlockEntity getBlockDown(Vector2 position, int distance) {
-        return getBlockAt(position.add(down.scl(distance)));
+    public Block getBlockAt(int x, int y) {
+        return getBlockAt(new Position(x, y));
     }
 
-    public BlockEntity getBlockUp(Vector2 position, int distance) {
-        return getBlockAt(position.add(up.scl(distance)));
-    }
-
-    public BlockEntity getBlockLeft(Vector2 position, int distance) {
-        return getBlockAt(position.add(left.scl(distance)));
-    }
-
-    public BlockEntity getBlockRight(Vector2 position, int distance) {
-        return getBlockAt(position.add(right.scl(distance)));
+    public void removeBlock(Block block) {
+        Position pos = block.getPosition();
+        if (getBlockAt(pos) == null) {
+            return;
+        } else {
+            blocks[pos.x][pos.y] = null;
+        }
     }
 }
